@@ -508,8 +508,8 @@ export default function SituasiPerjalananSection() {
 
             // === LEG 2: Musafir -> Mastautin ===
             .add(() => {
-              setStatusText("🟢 Pulang balik ke Mastautin. Masih musafir.");
-              gsap.to(carGlowRef.current, { fill: '#22c55e', duration: 0.3 });
+              setStatusText("🔴 Pulang balik ke Mastautin. Masih musafir.");
+              gsap.to(carGlowRef.current, { fill: '#ef4444', duration: 0.3 });
             })
             .to(car, {
               motionPath: {
@@ -938,7 +938,7 @@ export default function SituasiPerjalananSection() {
                 ref={glow3bGreenRef}
                 d="M 200 280 Q 165 224, 129 166"
                 fill="none"
-                stroke="#22c55e"
+                stroke="#ef4444"
                 strokeWidth="14"
                 strokeLinecap="butt"
                 opacity="0"

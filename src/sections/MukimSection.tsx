@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Calendar, Clock, Volume2 } from 'lucide-react';
+import { Clock, Volume2 } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -162,8 +162,6 @@ export default function MukimSection() {
                       audioRef.current.currentTime = 0;
                       audioRef.current.play().catch((e) => console.log('Audio play failed:', e));
                     }
-                    const bubble = document.getElementById('bubble-mukim');
-                    if (bubble) bubble.style.display = 'none';
                   }}
                   className="w-12 h-12 md:w-16 md:h-16 flex-shrink-0 rounded-full bg-teal/10 hover:bg-teal/20 flex items-center justify-center text-teal transition-colors shadow-sm cursor-pointer"
                   aria-label="Dengar audio Mukim"
@@ -171,13 +169,6 @@ export default function MukimSection() {
                 >
                   <Volume2 className="w-6 h-6 md:w-8 md:h-8" />
                 </button>
-                {/* Floating bubble indicator */}
-                <div id="bubble-mukim" className="absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap animate-bounce">
-                  <div className="bg-teal text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg">
-                    Tekan sini 🔊
-                  </div>
-                  <div className="w-2 h-2 bg-teal rotate-45 mx-auto -mt-1" />
-                </div>
               </div>
             </div>
             <p className="text-xl text-gold font-display mb-8">
@@ -237,10 +228,7 @@ export default function MukimSection() {
                 <div className="absolute inset-0 bg-gradient-to-t from-teal/20 to-transparent" />
               </div>
 
-              {/* Floating Calendar Icon */}
-              <div className="absolute -bottom-6 -left-6 w-20 h-20 bg-white rounded-2xl shadow-card flex items-center justify-center animate-float">
-                <Calendar className="w-10 h-10 text-teal" />
-              </div>
+
 
               {/* Decorative Elements */}
               <div className="absolute -top-4 -right-4 w-16 h-16 bg-gold/20 rounded-full animate-pulse-glow" />

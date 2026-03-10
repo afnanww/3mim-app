@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Car, Navigation, MapPin, Volume2 } from 'lucide-react';
+import { Navigation, MapPin, Volume2 } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,52 +11,11 @@ export default function MusafirSection() {
   const contentRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const numberRef = useRef<HTMLDivElement>(null);
-  const pathRef = useRef<SVGPathElement>(null);
-  const carRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Road path draw animation
-      if (pathRef.current) {
-        const length = pathRef.current.getTotalLength();
-        gsap.set(pathRef.current, {
-          strokeDasharray: length,
-          strokeDashoffset: length,
-        });
 
-        // Animate path draw on scroll
-        gsap.to(pathRef.current, {
-          strokeDashoffset: 0,
-          duration: 1.5,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-          },
-        });
-
-        // Car movement along path tied to scroll
-        if (carRef.current && pathRef.current) {
-          gsap.to(carRef.current, {
-            motionPath: {
-              path: pathRef.current,
-              align: pathRef.current,
-              alignOrigin: [0.5, 0.5],
-              autoRotate: true,
-            },
-            duration: 3,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: 'top 80%',
-              end: 'bottom 20%',
-              scrub: 1,
-            },
-          });
-        }
-      }
 
       // Title slide from left
       gsap.fromTo(
@@ -161,8 +120,6 @@ export default function MusafirSection() {
                       audioRef.current.currentTime = 0;
                       audioRef.current.play().catch((e) => console.log('Audio play failed:', e));
                     }
-                    const bubble = document.getElementById('bubble-musafir');
-                    if (bubble) bubble.style.display = 'none';
                   }}
                   className="w-12 h-12 md:w-16 md:h-16 flex-shrink-0 rounded-full bg-teal/10 hover:bg-teal/20 flex items-center justify-center text-teal transition-colors shadow-sm cursor-pointer"
                   aria-label="Dengar audio Musafir"
@@ -170,13 +127,6 @@ export default function MusafirSection() {
                 >
                   <Volume2 className="w-6 h-6 md:w-8 md:h-8" />
                 </button>
-                {/* Floating bubble indicator */}
-                <div id="bubble-musafir" className="absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap animate-bounce">
-                  <div className="bg-teal text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg">
-                    Tekan sini 🔊
-                  </div>
-                  <div className="w-2 h-2 bg-teal rotate-45 mx-auto -mt-1" />
-                </div>
               </div>
             </div>
             <p className="text-xl text-gold font-display mb-8">
@@ -239,70 +189,12 @@ export default function MusafirSection() {
                 />
               </div>
 
-              {/* Animated Car Badge */}
-              <div className="absolute -bottom-4 -right-4 w-20 h-20 bg-teal rounded-full flex items-center justify-center shadow-glow-teal animate-car-bounce">
-                <Car className="w-10 h-10 text-white" />
-              </div>
-
               {/* Distance Marker */}
               <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-xl px-4 py-2 shadow-card">
                 <p className="text-teal font-bold text-lg">81 KM</p>
                 <p className="text-gray-500 text-xs">Minimum</p>
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Journey Path Visualization */}
-        <div className="mt-16 relative hidden lg:block">
-          <svg
-            className="w-full h-24"
-            viewBox="0 0 800 100"
-            preserveAspectRatio="none"
-          >
-            {/* Background Road */}
-            <path
-              d="M 0 80 Q 200 20, 400 50 T 800 30"
-              fill="none"
-              stroke="#e5e5e5"
-              strokeWidth="20"
-              strokeLinecap="round"
-            />
-            {/* Animated Road Line */}
-            <path
-              ref={pathRef}
-              d="M 0 80 Q 200 20, 400 50 T 800 30"
-              fill="none"
-              stroke="url(#roadGradient)"
-              strokeWidth="4"
-              strokeLinecap="round"
-              strokeDasharray="10 5"
-            />
-            {/* Gradient Definition */}
-            <defs>
-              <linearGradient id="roadGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#024c44" />
-                <stop offset="50%" stopColor="#d4a574" />
-                <stop offset="100%" stopColor="#024c44" />
-              </linearGradient>
-            </defs>
-          </svg>
-
-          {/* Milestone Markers */}
-          <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-            {[0, 27, 54, 81].map((km, index) => (
-              <div
-                key={index}
-                className="absolute flex flex-col items-center"
-                style={{
-                  left: `${(index / 3) * 100}%`,
-                  top: index % 2 === 0 ? '60%' : '20%',
-                }}
-              >
-                <div className="w-4 h-4 bg-gold rounded-full shadow-glow-gold animate-pulse" />
-                <span className="text-xs text-gray-500 mt-1">{km}km</span>
-              </div>
-            ))}
           </div>
         </div>
       </div>

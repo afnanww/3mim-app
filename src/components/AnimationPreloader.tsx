@@ -420,7 +420,6 @@ export default function AnimationPreloader({ isPlaying, onComplete }: AnimationP
                         <div className="relative rounded-3xl overflow-hidden shadow-2xl max-w-sm lg:max-w-md">
                             <img src={`${import.meta.env.BASE_URL}mastautin-illustration.jpg`} alt="Mastautin" className="w-full h-auto" />
                         </div>
-                        <div className="absolute -bottom-4 -right-4 w-16 h-16 bg-teal rounded-full flex items-center justify-center shadow-glow-teal"><Home className="w-8 h-8 text-white" /></div>
                     </div>
                     <div className="text-center lg:text-left">
                         <div className="mas-hdr">
@@ -457,7 +456,6 @@ export default function AnimationPreloader({ isPlaying, onComplete }: AnimationP
                         <div className="relative rounded-3xl overflow-hidden shadow-2xl max-w-sm lg:max-w-md">
                             <img src={`${import.meta.env.BASE_URL}mukim-illustration.jpg`} alt="Mukim" className="w-full h-auto" />
                         </div>
-                        <div className="absolute -bottom-6 -left-6 w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-2xl shadow-card flex items-center justify-center"><CalendarDays className="w-8 h-8 sm:w-10 sm:h-10 text-teal" /></div>
                     </div>
                 </div>
             </div>
@@ -473,21 +471,13 @@ export default function AnimationPreloader({ isPlaying, onComplete }: AnimationP
                             <p className="text-base sm:text-lg text-gray-700 leading-relaxed mb-6 lg:mb-8">Musafir ialah seseorang yang melakukan perjalanan melebihi <span className="font-semibold text-teal">dua marhalah</span> atau <span className="font-semibold text-teal">81 kilometer</span>.</p>
                             <div className="inline-flex items-center gap-4 sm:gap-6 bg-gradient-to-r from-gold to-gold-light rounded-2xl p-4 sm:p-6 shadow-glow-gold mb-8 text-left">
                                 <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-white/30 flex items-center justify-center"><Navigation className="w-8 h-8 sm:w-12 sm:h-12 text-white" /></div>
-                                <div><p className="text-3xl sm:text-5xl font-display font-bold text-white">≥ 81</p><p className="text-white/90 text-sm sm:text-lg font-semibold">KM</p><p className="text-white/70 text-xs sm:text-sm mt-1">Jarak minimum untuk menjadi musafir</p></div>
+                                <div><div className="flex items-baseline gap-2"><p className="text-3xl sm:text-5xl font-display font-bold text-white">≥ 81</p><p className="text-white/90 text-2xl font-bold font-display tracking-wide animate-km-glow">KM</p></div><p className="text-white/70 text-xs sm:text-sm mt-1">Jarak minimum untuk menjadi musafir</p></div>
                             </div>
                         </div>
                     </div>
                     <div className="mus-img order-1 lg:order-2 relative flex justify-center flex-col">
                         <div className="relative rounded-3xl overflow-hidden shadow-2xl max-w-sm lg:max-w-md">
                             <img src={`${import.meta.env.BASE_URL}musafir-illustration.jpg`} alt="Musafir" className="w-full h-auto" />
-                        </div>
-                        <div className="absolute -bottom-4 -right-4 w-16 h-16 sm:w-20 sm:h-20 bg-teal rounded-full flex items-center justify-center shadow-glow-teal"><Car className="w-8 h-8 sm:w-10 sm:h-10 text-white" /></div>
-
-                        <div className="w-full h-24 mt-8 relative hidden lg:block">
-                            <svg className="w-full h-full" viewBox="0 0 800 100" preserveAspectRatio="none">
-                                <path d="M 0 80 Q 200 20, 400 50 T 800 30" fill="none" stroke="#e5e5e5" strokeWidth="20" strokeLinecap="round" />
-                                <path className="mus-path" d="M 0 80 Q 200 20, 400 50 T 800 30" fill="none" stroke="#d4a574" strokeWidth="4" strokeLinecap="round" strokeDasharray="10 5" style={{ strokeDasharray: '1000', strokeDashoffset: '1000' }} />
-                            </svg>
                         </div>
                     </div>
                 </div>
@@ -500,7 +490,7 @@ export default function AnimationPreloader({ isPlaying, onComplete }: AnimationP
                             <button disabled className="p-2 bg-gray-50 rounded-lg"><ArrowLeft className="w-5 h-5 text-gray-400" /></button>
                             <div className="flex items-center gap-2">
                                 <CalendarDays className="w-5 h-5 text-teal" />
-                                <span className="text-lg font-display font-bold text-teal">Disember 2024</span>
+                                <span className="text-lg font-display font-bold text-teal">Januari 2026</span>
                             </div>
                             <button disabled className="p-2 bg-gray-50 rounded-lg"><ArrowRight className="w-5 h-5 text-gray-400" /></button>
                         </div>
@@ -725,15 +715,9 @@ export default function AnimationPreloader({ isPlaying, onComplete }: AnimationP
             {/* LOMPAT SKIP COMPONENT */}
             <button
                 onClick={handleSkip}
-                style={{
-                    position: 'absolute', bottom: 28, right: 36, background: 'transparent', border: '1px solid rgba(212,175,55,0.45)',
-                    color: 'rgba(212,175,55,0.75)', padding: '7px 18px', borderRadius: 4, fontSize: '0.75rem', letterSpacing: '0.12em',
-                    cursor: 'pointer', zIndex: 100000, pointerEvents: 'auto', transition: 'all 0.2s ease',
-                }}
-                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(212,175,55,0.12)'; (e.currentTarget as HTMLButtonElement).style.color = '#D4AF37'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; (e.currentTarget as HTMLButtonElement).style.color = 'rgba(212,175,55,0.75)'; }}
+                className="fixed bottom-7 right-9 bg-white border-2 border-gold text-gold font-bold text-sm px-6 py-2.5 rounded-xl shadow-[0_4px_15px_rgba(0,0,0,0.15)] hover:bg-teal hover:border-teal hover:text-white hover:-translate-y-1 transition-all duration-300 z-[100000] tracking-widest"
             >
-                HENTIKAN ANIMASI &times;
+                HENTIKAN ANIMASI
             </button>
 
         </div>
