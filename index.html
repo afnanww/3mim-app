@@ -2,10 +2,37 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function() {
+        function setViewport() {
+          var isMobileDevice = /Mobi|Android/i.test(navigator.userAgent);
+          var metaViewport = document.querySelector('meta[name=viewport]');
+          if (!metaViewport) {
+            metaViewport = document.createElement('meta');
+            metaViewport.name = "viewport";
+            document.head.appendChild(metaViewport);
+          }
+          if (isMobileDevice) {
+            var isPortrait = window.innerHeight > window.innerWidth;
+            if (isPortrait) {
+              // Force exact portrait logical width (e.g. 414px) and let browser scale it natively
+              metaViewport.setAttribute('content', 'width=414, user-scalable=no');
+            } else {
+              // Force exact landscape logical width (e.g. 896px)
+              metaViewport.setAttribute('content', 'width=896, user-scalable=no');
+            }
+          } else {
+            metaViewport.setAttribute('content', 'width=device-width, initial-scale=1.0');
+          }
+        }
+        setViewport();
+        window.addEventListener('resize', setViewport);
+        window.addEventListener('orientationchange', setViewport);
+      })();
+    </script>
     <title>Peta Muka - Tiga Mim</title>
-    <script type="module" crossorigin src="/3mim-app/assets/index-3qstkGBy.js"></script>
-    <link rel="stylesheet" crossorigin href="/3mim-app/assets/index-Bl3oiJEr.css">
+    <script type="module" crossorigin src="/3mim-app/assets/index-CMQOY39F.js"></script>
+    <link rel="stylesheet" crossorigin href="/3mim-app/assets/index-C5GD45iI.css">
   </head>
   <body>
     <div id="root"></div>
