@@ -171,13 +171,13 @@ export default function MukimSection() {
                 </button>
               </div>
             </div>
-            <p className="text-xl landscape:text-base text-gold font-display mb-8 landscape:mb-4">
+            <p className="text-xl sm:text-3xl md:text-4xl landscape:text-xl text-gold font-display mb-8 landscape:mb-4">
               Tinggal Sementara
             </p>
 
             {/* Definition */}
             <div ref={contentRef} className="opacity-0">
-              <p className="text-lg text-gray-700 leading-relaxed mb-8">
+              <p className="text-lg sm:text-2xl md:text-3xl text-gray-700 leading-relaxed mb-8">
                 Mukim bermaksud tinggal dan menetap di sesuatu tempat{' '}
                 <span className="font-semibold text-teal">lebih dari tiga hari</span>,
                 tetapi tidak berniat untuk menjadikannya tempat tinggal tetap
@@ -218,7 +218,7 @@ export default function MukimSection() {
           <div ref={imageRef} className="order-1 md:order-2 opacity-0">
             <div className="relative">
               {/* Main Image */}
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] lg:aspect-[5/4]">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-square">
                 <img
                   src={`${import.meta.env.BASE_URL}mukim-illustration.jpg`}
                   alt="Mukim Illustration"

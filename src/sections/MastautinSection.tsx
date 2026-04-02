@@ -159,7 +159,7 @@ export default function MastautinSection() {
           <div ref={imageRef} className="opacity-0">
             <div className="relative flex justify-center">
               {/* Main Image */}
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl w-full max-w-sm lg:max-w-md aspect-[4/3] lg:aspect-[5/4] animate-house-float">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl w-full max-w-sm lg:max-w-md aspect-square animate-house-float">
                 <img
                   src={`${import.meta.env.BASE_URL}mastautin-illustration.jpg`}
                   alt="Mastautin Illustration"
@@ -198,12 +198,12 @@ export default function MastautinSection() {
                 </button>
               </div>
             </div>
-            <p className="text-xl landscape:text-base text-gold font-display mb-8 landscape:mb-4">
+            <p className="text-xl sm:text-3xl md:text-4xl landscape:text-xl text-gold font-display mb-8 landscape:mb-4">
               Tempat Tinggal Tetap
             </p>
             {/* Definition */}
             <div ref={contentRef} className="opacity-0">
-              <p className="text-xl text-gray-700 leading-relaxed mb-8">
+              <p className="text-lg sm:text-2xl md:text-3xl text-gray-700 leading-relaxed mb-8">
                 Mastautin ialah{' '}
                 <span className="font-semibold text-teal">
                   tempat tinggal tetap
@@ -223,7 +223,7 @@ export default function MastautinSection() {
                       className="example-item flex items-center gap-2 bg-white px-4 py-3 rounded-xl shadow-card hover:shadow-card-hover transition-shadow duration-300 opacity-0"
                     >
                       <span className="text-teal">{example.icon}</span>
-                      <span className="text-gray-700 font-medium">
+                      <span className="text-gray-700 font-semibold sm:text-xl md:text-2xl tracking-wide">
                         {example.text}
                       </span>
                     </div>

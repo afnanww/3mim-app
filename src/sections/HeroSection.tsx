@@ -16,6 +16,9 @@ export default function HeroSection() {
   const patternRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const handleTrigger = () => setShowPreloader(true);
+    window.addEventListener('trigger-preloader', handleTrigger);
+    
     const ctx = gsap.context(() => {
       // Initial entrance animations
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
@@ -86,7 +89,10 @@ export default function HeroSection() {
       });
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      window.removeEventListener('trigger-preloader', handleTrigger);
+      ctx.revert();
+    };
   }, []);
 
   const scrollToNext = () => {
@@ -193,8 +199,8 @@ export default function HeroSection() {
             untuk memahami rukhsah solat bagi musafir atau panduan untuk
             melaksanakan solat Jamak dan Qasar.
           </p>
-          {/* Mainkan Animasi Button */}
-          <div className="mt-4 sm:mt-8 flex justify-center">
+          {/* Mainkan Animasi Button - ONLY IN LANDSCAPE */}
+          <div className="mt-4 sm:mt-8 hidden landscape:flex justify-center">
             <button
               onClick={async () => {
                 setShowPreloader(true);
@@ -242,16 +248,20 @@ export default function HeroSection() {
               MAINKAN ANIMASI
             </button>
           </div>
-        </div>
 
-        {/* Scroll Indicator */}
-        <div
-          ref={scrollIndicatorRef}
-          className="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 text-center cursor-pointer opacity-0 landscape:max-lg:hidden"
-          onClick={scrollToNext}
-        >
-          <p className="text-white/60 text-sm mb-2">Mula Perjalanan</p>
-          <ChevronDown className="w-6 h-6 text-gold mx-auto animate-scroll-bounce" />
+
+          {/* Scroll Indicator (Moved to flow instead of absolute bottom) */}
+          <div
+            ref={scrollIndicatorRef}
+            className="mt-12 sm:mt-16 mx-auto text-center cursor-pointer opacity-0 flex flex-col items-center justify-center landscape:max-lg:hidden"
+            onClick={scrollToNext}
+          >
+            <p className="text-white/80 text-base md:text-lg mb-2">Mula Perjalanan</p>
+            <ChevronDown 
+              className="w-8 h-8 text-gold mx-auto" 
+              style={{ animation: 'scrollBounceHuge 2s infinite ease-in-out' }} 
+            />
+          </div>
         </div>
       </section>
     </>

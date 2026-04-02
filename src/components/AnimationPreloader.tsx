@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
-import { Home, MapPin, Car, Navigation, CalendarDays, Sparkles, Heart, Building2, Briefcase, Coffee, ArrowLeft, ArrowRight, ArrowDown, HelpCircle, Clock } from 'lucide-react';
+import { Smartphone, Home, MapPin, Car, Navigation, CalendarDays, Sparkles, Heart, Building2, Briefcase, Coffee, ArrowLeft, ArrowRight, ArrowDown, HelpCircle, Clock } from 'lucide-react';
 
 gsap.registerPlugin(MotionPathPlugin);
 
@@ -13,6 +13,28 @@ interface AnimationPreloaderProps {
 export default function AnimationPreloader({ isPlaying, onComplete }: AnimationPreloaderProps) {
     const overlayRef = useRef<HTMLDivElement>(null);
     const tlRef = useRef<gsap.core.Timeline | null>(null);
+    const [isPortrait, setIsPortrait] = useState(false);
+
+    useEffect(() => {
+        if (!isPlaying) return;
+        const checkOrientation = () => setIsPortrait(window.innerHeight > window.innerWidth);
+        checkOrientation();
+        window.addEventListener('resize', checkOrientation);
+        return () => window.removeEventListener('resize', checkOrientation);
+    }, [isPlaying]);
+
+    useEffect(() => {
+        if (isPlaying && tlRef.current) {
+            if (isPortrait) {
+                tlRef.current.pause();
+                // Pause all audios if orientation blocked
+                const audios = document.querySelectorAll('audio');
+                audios.forEach((audio: any) => audio.pause());
+            } else {
+                tlRef.current.play();
+            }
+        }
+    }, [isPortrait, isPlaying]);
 
     // Slides refs
     const slide0Ref = useRef<HTMLDivElement>(null); // Opening
@@ -597,6 +619,23 @@ export default function AnimationPreloader({ isPlaying, onComplete }: AnimationP
             <div className="absolute inset-0 bg-[#012b25]" />
             <div className="absolute inset-0 bg-[linear-gradient(160deg,#012b25_0%,#024c44_50%,#01201b_100%)] opacity-80" />
 
+            {/* Inherent Portrait Blocker for AnimationPreloader */}
+            {isPortrait && (
+                <div className="absolute inset-0 z-[1000000] bg-teal flex flex-col items-center justify-center text-white p-6 text-center shadow-2xl">
+                    <Smartphone className="w-24 h-24 text-gold mb-8 transform rotate-90" />
+                    <h2 className="text-3xl font-bold font-display mb-4 text-gold">Mod Landskap Diperlukan</h2>
+                    <p className="text-lg opacity-90 max-w-md mx-auto relative z-10 mb-8">
+                        Sila putarkan telefon anda secara melintang (landskap) untuk melihat tontonan animasi penuh.
+                    </p>
+                    <button
+                        onClick={onComplete}
+                        className="px-6 py-3 bg-teal-800 hover:bg-teal-700 text-white font-bold rounded-full shadow-lg transition-transform hover:scale-105 active:scale-95"
+                    >
+                        Kembali Ke Laman Utama
+                    </button>
+                </div>
+            )}
+
             {/* ---------------- SLIDE 0: MAIN OPENING ---------------- */}
             <div ref={slide0Ref} className="absolute inset-0 flex flex-col items-center justify-center p-8 landscape:p-4 text-center pointer-events-none text-white">
                 <div className="anim-item text-gold font-serif text-[clamp(1.3rem,4vw,2rem)] landscape:text-[clamp(1rem,3vw,1.5rem)] mb-3 landscape:mb-1" style={{ textShadow: '0 0 24px rgba(212,175,55,0.4)' }}>بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
@@ -638,20 +677,20 @@ export default function AnimationPreloader({ isPlaying, onComplete }: AnimationP
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 landscape:gap-6 items-center max-w-7xl w-full z-10 mx-auto">
                     <div className="mas-img relative flex justify-center w-full">
-                        <div className="relative rounded-3xl landscape:rounded-2xl overflow-hidden shadow-2xl w-full max-w-sm lg:max-w-md aspect-[4/3] landscape:aspect-[5/4] bg-teal/5">
+                        <div className="relative rounded-3xl overflow-hidden shadow-2xl w-full max-w-sm lg:max-w-md aspect-square bg-teal/5">
                             <img src={`${import.meta.env.BASE_URL}mastautin-illustration.jpg`} alt="Mastautin" className="w-full h-full object-cover block" />
                         </div>
                     </div>
                     <div className="text-center lg:text-left landscape:text-left">
                         <div className="mas-hdr">
-                            <h2 className="text-4xl sm:text-5xl md:text-7xl landscape:text-3xl font-display font-bold text-teal mb-2 lg:mb-4 landscape:mb-1">MASTAUTIN</h2>
-                            <p className="text-lg sm:text-xl landscape:text-base text-gold font-display mb-4 lg:mb-8 landscape:mb-2">Tempat Tinggal Tetap</p>
+                            <h2 className="text-5xl sm:text-6xl md:text-7xl landscape:text-4xl font-display font-bold text-teal mb-2 lg:mb-4 landscape:mb-1">MASTAUTIN</h2>
+                            <p className="text-xl sm:text-3xl md:text-4xl landscape:text-xl text-gold font-display mb-4 lg:mb-8 landscape:mb-2">Tempat Tinggal Tetap</p>
                         </div>
                         <div className="mas-desc">
-                            <p className="text-base sm:text-xl landscape:text-sm text-gray-700 leading-relaxed mb-6 lg:mb-8 landscape:mb-3">Mastautin ialah <span className="font-semibold text-teal">tempat tinggal tetap</span> seseorang yang menjadi pusat kehidupan dan aktiviti harian.</p>
-                            <div className="flex flex-wrap justify-center lg:justify-start landscape:justify-start gap-4 landscape:gap-2">
-                                <div className="flex items-center gap-2 bg-white px-4 py-3 landscape:px-3 landscape:py-2 rounded-xl shadow-card"><Building2 className="w-5 h-5 text-teal" /><span className="text-gray-700 font-medium text-sm sm:text-base landscape:text-xs">Rumah sendiri</span></div>
-                                <div className="flex items-center gap-2 bg-white px-4 py-3 landscape:px-3 landscape:py-2 rounded-xl shadow-card"><Briefcase className="w-5 h-5 text-teal" /><span className="text-gray-700 font-medium text-sm sm:text-base landscape:text-xs">Tempat kerja tetap</span></div>
+                            <p className="text-lg sm:text-2xl md:text-3xl landscape:text-lg text-gray-700 leading-relaxed mb-6 lg:mb-8 landscape:mb-3">Mastautin ialah <span className="font-semibold text-teal">tempat tinggal tetap</span> seseorang yang menjadi pusat kehidupan dan aktiviti harian.</p>
+                            <div className="flex flex-wrap justify-center lg:justify-start landscape:justify-start gap-4 landscape:gap-3">
+                                <div className="flex items-center gap-2 bg-white px-5 py-3 landscape:px-4 landscape:py-2 rounded-2xl shadow-sm"><Building2 className="w-6 h-6 sm:w-7 sm:h-7 text-teal" /><span className="text-teal font-semibold text-base sm:text-xl landscape:text-sm tracking-wide">Rumah sendiri</span></div>
+                                <div className="flex items-center gap-2 bg-white px-5 py-3 landscape:px-4 landscape:py-2 rounded-2xl shadow-sm"><Briefcase className="w-6 h-6 sm:w-7 sm:h-7 text-teal" /><span className="text-teal font-semibold text-base sm:text-xl landscape:text-sm tracking-wide">Tempat kerja tetap</span></div>
                             </div>
                         </div>
                     </div>
@@ -663,17 +702,17 @@ export default function AnimationPreloader({ isPlaying, onComplete }: AnimationP
                 <audio ref={audioMukimRef} src={`${import.meta.env.BASE_URL}mukim.mp4`} preload="auto" />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 landscape:gap-6 items-center max-w-7xl w-full z-10 mx-auto">
                     <div className="muk-img relative flex justify-center w-full">
-                        <div className="relative rounded-3xl landscape:rounded-2xl overflow-hidden shadow-2xl w-full max-w-sm lg:max-w-md aspect-[4/3] landscape:aspect-[5/4] bg-teal/5">
+                        <div className="relative rounded-3xl overflow-hidden shadow-2xl w-full max-w-sm lg:max-w-md aspect-square bg-teal/5">
                             <img src={`${import.meta.env.BASE_URL}mukim-illustration.jpg`} alt="Mukim" className="w-full h-full object-cover block" />
                         </div>
                     </div>
                     <div className="text-center lg:text-left landscape:text-left">
                         <div className="muk-hdr">
-                            <h2 className="text-4xl sm:text-5xl md:text-7xl landscape:text-3xl font-display font-bold text-teal mb-2 lg:mb-4 landscape:mb-1">MUKIM</h2>
-                            <p className="text-lg sm:text-xl landscape:text-base text-gold font-display mb-4 lg:mb-8 landscape:mb-2">Tinggal Sementara</p>
+                            <h2 className="text-5xl sm:text-6xl md:text-7xl landscape:text-4xl font-display font-bold text-teal mb-2 lg:mb-4 landscape:mb-1">MUKIM</h2>
+                            <p className="text-xl sm:text-3xl md:text-4xl landscape:text-xl text-gold font-display mb-4 lg:mb-8 landscape:mb-2">Tinggal Sementara</p>
                         </div>
                         <div className="muk-desc">
-                            <p className="text-base sm:text-lg landscape:text-sm text-gray-700 leading-relaxed mb-6 lg:mb-8 landscape:mb-3">Mukim bermaksud tinggal dan menetap di sesuatu tempat <span className="font-semibold text-teal">lebih dari tiga hari</span>, tetapi tidak berniat untuk menjadikannya tempat tinggal tetap selamanya.</p>
+                            <p className="text-lg sm:text-2xl md:text-3xl landscape:text-lg text-gray-700 leading-relaxed mb-6 lg:mb-8 landscape:mb-3">Mukim bermaksud tinggal dan menetap di sesuatu tempat <span className="font-semibold text-teal">lebih dari tiga hari</span>, tetapi tidak berniat untuk menjadikannya tempat tinggal tetap selamanya.</p>
                             <div className="inline-flex items-center gap-4 landscape:gap-3 bg-gradient-to-r from-teal to-teal-light rounded-2xl p-4 sm:p-6 landscape:p-3 shadow-glow-teal text-left">
                                 <div className="w-16 h-16 sm:w-20 sm:h-20 landscape:w-12 landscape:h-12 rounded-full bg-white/20 flex items-center justify-center"><span className="text-3xl sm:text-5xl landscape:text-2xl font-display font-bold text-white">3</span></div>
                                 <div><p className="text-2xl sm:text-3xl landscape:text-xl font-display font-bold text-white">&gt; 3 Hari</p><p className="text-white/80 text-xs sm:text-sm landscape:text-xs">Tempoh minimum untuk dianggap mukim</p></div>
@@ -688,17 +727,17 @@ export default function AnimationPreloader({ isPlaying, onComplete }: AnimationP
                 <audio ref={audioMusafirRef} src={`${import.meta.env.BASE_URL}musafir.mp4`} preload="auto" />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 landscape:gap-6 items-center max-w-7xl w-full z-10 mx-auto">
                     <div className="mus-img relative flex justify-center w-full">
-                        <div className="relative rounded-3xl landscape:rounded-2xl overflow-hidden shadow-2xl w-full max-w-sm lg:max-w-md aspect-[4/3] landscape:aspect-[5/4] bg-teal/5">
+                        <div className="relative rounded-3xl overflow-hidden shadow-2xl w-full max-w-sm lg:max-w-md aspect-square bg-teal/5">
                             <img src={`${import.meta.env.BASE_URL}musafir-illustration.jpg`} alt="Musafir" className="w-full h-full object-cover block" />
                         </div>
                     </div>
                     <div className="text-center lg:text-left landscape:text-left">
                         <div className="mus-hdr">
-                            <h2 className="text-4xl sm:text-5xl md:text-7xl landscape:text-3xl font-display font-bold text-teal mb-2 lg:mb-4 landscape:mb-1">MUSAFIR</h2>
-                            <p className="text-lg sm:text-xl landscape:text-base text-gold font-display mb-4 lg:mb-8 landscape:mb-2">Dalam Perjalanan</p>
+                            <h2 className="text-5xl sm:text-6xl md:text-7xl landscape:text-4xl font-display font-bold text-teal mb-2 lg:mb-4 landscape:mb-1">MUSAFIR</h2>
+                            <p className="text-xl sm:text-3xl md:text-4xl landscape:text-xl text-gold font-display mb-4 lg:mb-8 landscape:mb-2">Dalam Perjalanan</p>
                         </div>
                         <div className="mus-desc">
-                            <p className="text-base sm:text-lg landscape:text-sm text-gray-700 leading-relaxed mb-6 lg:mb-8 landscape:mb-3">Musafir ialah seseorang yang melakukan perjalanan melebihi <span className="font-semibold text-teal">dua marhalah</span> atau <span className="font-semibold text-teal">81 kilometer</span>.</p>
+                            <p className="text-lg sm:text-2xl md:text-3xl landscape:text-lg text-gray-700 leading-relaxed mb-6 lg:mb-8 landscape:mb-3">Musafir ialah seseorang yang melakukan perjalanan melebihi <span className="font-semibold text-teal">dua marhalah</span> atau <span className="font-semibold text-teal">81 kilometer</span>.</p>
                             <div className="inline-flex items-center gap-4 sm:gap-6 landscape:gap-3 bg-gradient-to-r from-gold to-gold-light rounded-2xl p-4 sm:p-6 landscape:p-3 shadow-glow-gold mb-8 landscape:mb-3 text-left">
                                 <div className="w-16 h-16 sm:w-24 sm:h-24 landscape:w-12 landscape:h-12 rounded-full bg-white/30 flex items-center justify-center"><Navigation className="w-8 h-8 sm:w-12 sm:h-12 landscape:w-6 landscape:h-6 text-white" /></div>
                                 <div><div className="flex items-baseline gap-2"><p className="text-3xl sm:text-5xl landscape:text-2xl font-display font-bold text-white">≥ 81</p><p className="text-white/90 text-2xl landscape:text-lg font-bold font-display tracking-wide animate-km-glow">KM</p></div><p className="text-white/70 text-xs sm:text-sm landscape:text-xs mt-1">Jarak minimum untuk menjadi musafir</p></div>
