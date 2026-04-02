@@ -29,9 +29,11 @@
             if (isTablet) {
               // Tablets have enough height even in landscape (e.g. 768px). Leave as default responsive.
               metaViewport.setAttribute('content', 'width=device-width, initial-scale=1.0');
+              document.documentElement.style.zoom = "";
             } else if (isPortrait) {
               // For portrait phones, slight shrinkage
               metaViewport.setAttribute('content', 'width=500, user-scalable=no');
+              document.documentElement.style.zoom = "";
             } else {
               // For landscape phones, force desktop-like aspect to shrink content
               // Use max/min to ensure we correctly use landscape dimensions even if w/h haven't updated yet
@@ -41,9 +43,17 @@
               var targetLogicalHeight = 650;
               var logicalWidth = Math.max(1280, Math.round(targetLogicalHeight * aspect));
               metaViewport.setAttribute('content', 'width=' + logicalWidth + ', user-scalable=no');
+              
+              // Mobile Chrome ignores viewport width in Fullscreen Mode API. Hack: apply CSS zoom!
+              if (document.fullscreenElement || document.webkitFullscreenElement) {
+                document.documentElement.style.zoom = (maxDim / logicalWidth).toString();
+              } else {
+                document.documentElement.style.zoom = "";
+              }
             }
           } else {
             metaViewport.setAttribute('content', 'width=device-width, initial-scale=1.0');
+            document.documentElement.style.zoom = "";
           }
         }
         setViewport();
