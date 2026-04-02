@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Smartphone } from 'lucide-react';
 
 export default function LandscapeOrientationBlocker() {
@@ -56,9 +56,12 @@ export default function LandscapeOrientationBlocker() {
 
   const shouldBlock = isMobileDevice && isPortrait && hasScrolled;
 
+  const wasBlocked = useRef(false);
+
   useEffect(() => {
     if (shouldBlock) {
       document.body.style.overflow = 'hidden';
+      wasBlocked.current = true;
       // Attempt to natively lock orientation if supported (usually requires fullscreen)
       try {
         if ('orientation' in screen && 'lock' in screen.orientation) {
@@ -71,6 +74,11 @@ export default function LandscapeOrientationBlocker() {
       }
     } else {
       document.body.style.overflow = '';
+      // When blocker is dismissed (user rotated to landscape), scroll to top
+      if (wasBlocked.current) {
+        wasBlocked.current = false;
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }
     }
     return () => {
       document.body.style.overflow = '';
