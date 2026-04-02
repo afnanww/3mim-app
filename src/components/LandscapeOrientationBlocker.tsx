@@ -105,33 +105,31 @@ export default function LandscapeOrientationBlocker() {
       <button 
         onClick={async () => {
           try {
-            if (document.documentElement.requestFullscreen) {
-              await document.documentElement.requestFullscreen();
+            // Try to lock orientation to landscape WITHOUT fullscreen
+            if ('orientation' in screen && 'lock' in screen.orientation) {
+              await (screen.orientation as any).lock('landscape').catch((err: any) => console.warn('Orientation lock failed:', err));
             }
-            // Wait a tiny bit for fullscreen to settle before locking
-            setTimeout(async () => {
-              if ('orientation' in screen && 'lock' in screen.orientation) {
-                await (screen.orientation as any).lock('landscape').catch((err: any) => console.warn('Orientation lock failed:', err));
-              }
-              
-              // Force Auto-Scaling Viewport for Landscape Immersion (Option 2)
-              const metaViewport = document.querySelector('meta[name=viewport]');
-              if (metaViewport) {
-                const sw = window.screen.width;
-                const sh = window.screen.height;
-                const aspect = Math.max(sw, sh) / Math.min(sw, sh);
-                const targetLogicalHeight = 650;
-                const logicalWidth = Math.max(1280, Math.round(targetLogicalHeight * aspect));
-                metaViewport.setAttribute('content', `width=${logicalWidth}, user-scalable=no`);
-              }
+            
+            // Adjust viewport for landscape
+            const metaViewport = document.querySelector('meta[name=viewport]');
+            if (metaViewport) {
+              const sw = window.screen.width;
+              const sh = window.screen.height;
+              const aspect = Math.max(sw, sh) / Math.min(sw, sh);
+              const targetLogicalHeight = 650;
+              const logicalWidth = Math.max(1280, Math.round(targetLogicalHeight * aspect));
+              metaViewport.setAttribute('content', `width=${logicalWidth}, user-scalable=no`);
+            }
 
-              // Trigger animation explicitly
-              window.dispatchEvent(new Event('trigger-preloader'));
-
-            }, 100);
+            // Only trigger animation if actually in landscape
+            // If still portrait, the blocker stays visible — user must rotate manually
+            setTimeout(() => {
+              if (window.innerWidth > window.innerHeight) {
+                window.dispatchEvent(new Event('trigger-preloader'));
+              }
+            }, 200);
           } catch (e) { 
-            console.error('Fullscreen failed:', e); 
-            window.dispatchEvent(new Event('trigger-preloader')); // Trigger anyway as fallback
+            console.warn('Orientation lock failed:', e); 
           }
         }}
         style={{
