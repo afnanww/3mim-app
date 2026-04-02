@@ -29,11 +29,9 @@
             if (isTablet) {
               // Tablets have enough height even in landscape (e.g. 768px). Leave as default responsive.
               metaViewport.setAttribute('content', 'width=device-width, initial-scale=1.0');
-              document.documentElement.style.fontSize = "16px";
             } else if (isPortrait) {
               // For portrait phones, slight shrinkage
               metaViewport.setAttribute('content', 'width=500, user-scalable=no');
-              document.documentElement.style.fontSize = "16px";
             } else {
               // For landscape phones, force desktop-like aspect to shrink content
               var maxDim = Math.max(w, h);
@@ -42,19 +40,9 @@
               var targetLogicalHeight = 650;
               var logicalWidth = Math.max(1280, Math.round(targetLogicalHeight * aspect));
               metaViewport.setAttribute('content', 'width=' + logicalWidth + ', user-scalable=no');
-
-              // The ULTIMATE FIX: Scale root REM dynamically!
-              // Since Chrome ignores viewport width in Fullscreen API, scaling rem flawlessly shrinks the Tailwind layout natively!
-              if (document.fullscreenElement || document.webkitFullscreenElement) {
-                var simScale = maxDim / logicalWidth;
-                document.documentElement.style.fontSize = (16 * simScale) + "px";
-              } else {
-                document.documentElement.style.fontSize = "16px";
-              }
             }
           } else {
             metaViewport.setAttribute('content', 'width=device-width, initial-scale=1.0');
-            document.documentElement.style.fontSize = "16px";
           }
         }
         setViewport();
@@ -64,8 +52,8 @@
       })();
     </script>
     <title>Peta Muka - Tiga Mim</title>
-    <script type="module" crossorigin src="/3mim-app/assets/index-dKSZmVB3.js"></script>
-    <link rel="stylesheet" crossorigin href="/3mim-app/assets/index-BrS3bUnC.css">
+    <script type="module" crossorigin src="/3mim-app/assets/index-HWKRiuTJ.js"></script>
+    <link rel="stylesheet" crossorigin href="/3mim-app/assets/index-D9oEs7Xl.css">
   </head>
   <body>
     <div id="root"></div>
