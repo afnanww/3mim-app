@@ -26,30 +26,24 @@
               isPortrait = window.innerHeight > window.innerWidth;
             }
 
+            // Bypassing meta viewport logical width changes prevents Chrome from selectively resetting it across contexts
+            metaViewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+
             if (isTablet) {
-              // Tablets have enough height even in landscape (e.g. 768px). Leave as default responsive.
-              metaViewport.setAttribute('content', 'width=device-width, initial-scale=1.0');
               document.documentElement.style.zoom = "";
             } else if (isPortrait) {
-              // For portrait phones, slight shrinkage
-              metaViewport.setAttribute('content', 'width=500, user-scalable=no');
-              document.documentElement.style.zoom = "";
+              var minDim = Math.min(w, h);
+              var portraitZoom = minDim / 500;
+              document.documentElement.style.zoom = portraitZoom < 1 ? portraitZoom.toString() : "";
             } else {
-              // For landscape phones, force desktop-like aspect to shrink content
-              // Use max/min to ensure we correctly use landscape dimensions even if w/h haven't updated yet
               var maxDim = Math.max(w, h);
               var minDim = Math.min(w, h);
               var aspect = maxDim / minDim;
               var targetLogicalHeight = 650;
               var logicalWidth = Math.max(1280, Math.round(targetLogicalHeight * aspect));
-              metaViewport.setAttribute('content', 'width=' + logicalWidth + ', user-scalable=no');
               
-              // Mobile Chrome ignores viewport width in Fullscreen Mode API. Hack: apply CSS zoom!
-              if (document.fullscreenElement || document.webkitFullscreenElement) {
-                document.documentElement.style.zoom = (maxDim / logicalWidth).toString();
-              } else {
-                document.documentElement.style.zoom = "";
-              }
+              var landscapeZoom = maxDim / logicalWidth;
+              document.documentElement.style.zoom = landscapeZoom.toString();
             }
           } else {
             metaViewport.setAttribute('content', 'width=device-width, initial-scale=1.0');
@@ -63,8 +57,8 @@
       })();
     </script>
     <title>Peta Muka - Tiga Mim</title>
-    <script type="module" crossorigin src="/3mim-app/assets/index-nRCHQU4H.js"></script>
-    <link rel="stylesheet" crossorigin href="/3mim-app/assets/index-CENOyAVL.css">
+    <script type="module" crossorigin src="/3mim-app/assets/index-CbuVELwJ.js"></script>
+    <link rel="stylesheet" crossorigin href="/3mim-app/assets/index-DbuRf_Hp.css">
   </head>
   <body>
     <div id="root"></div>
